@@ -11,32 +11,20 @@ def parse(lines):
 
 
 @expect({"test": 4277556})
-def solve1(input):
-    nums = [list(map(int, l.split())) for l in input[:-1]]
-
-    ans = 0
-    for i, op in enumerate(input[-1].split()):
-        ans += functools.reduce(operators[op], [nums[j][i] for j in range(len(nums))])
-    return ans
+def solve1(lines):
+    return sum(
+        functools.reduce(operators[operation], map(int, nums))
+        for *nums, operation in zip(*map(str.split, lines))
+    )
 
 
 @expect({"test": 3263827})
-def solve2(input):
-    problems = []
-    for i, op in enumerate(input[-1]):
-        if op == " ":
-            continue
-        problems.append((i, operators[op]))
-    problems.append((len(input[-1]) + 1, None))
-
-    ans = 0
-    for i, (start, p) in enumerate(problems[:-1]):
-        ans += functools.reduce(
-            p,
-            [
-                int("".join(input[k][j] for k in range(len(input) - 1)))
-                for j in range(start, problems[i + 1][0] - 1)
-            ],
-        )
-
+def solve2(lines):
+    ans, operands, i = 0, [], len(lines[0]) - 1
+    while i >= 0:
+        operands.append(int("".join(lines[j][i] for j in range(len(lines) - 1))))
+        if operator := operators.get(lines[-1][i], None):
+            ans += functools.reduce(operator, operands)
+            operands, i = [], i - 1
+        i -= 1
     return ans
