@@ -4,3 +4,4 @@ networkx[default]
 python-dotenv
 requests
 sympy
+z3-solver
