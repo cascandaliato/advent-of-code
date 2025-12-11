@@ -34,4 +34,4 @@ def solve2(adj):
             for next_ in adj[start]
         )
 
-    return count("svr", "out", False, False)
+    return count("svr", "out")
